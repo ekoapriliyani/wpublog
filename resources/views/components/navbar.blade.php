@@ -8,10 +8,10 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-                                <x-nav-link href="/" :current="request()->is('/')">Home</x-nav-link>
-                                <x-nav-link href="/posts" :current="request()->is('posts')">Blog</x-nav-link>
-                                <x-nav-link href="/about" :current="request()->is('about')">About</x-nav-link>
-                                <x-nav-link href="/contact" :current="request()->is('contact')">Contact</x-nav-link>
+                                <x-my-nav-link href="/" :current="request()->is('/')">Home</x-my-nav-link>
+                                <x-my-nav-link href="/posts" :current="request()->is('posts')">Blog</x-my-nav-link>
+                                <x-my-nav-link href="/about" :current="request()->is('about')">About</x-my-nav-link>
+                                <x-my-nav-link href="/contact" :current="request()->is('contact')">Contact</x-my-nav-link>
                             </div>
                         </div>
                     </div>
@@ -21,25 +21,43 @@
 
                             <!-- Profile dropdown -->
                             <el-dropdown class="relative ml-3">
-                                <button
-                                    class="relative flex max-w-xs items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-                                    <span class="absolute -inset-1.5"></span>
-                                    <span class="sr-only">Open user menu</span>
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        alt=""
-                                        class="size-8 rounded-full outline -outline-offset-1 outline-white/10" />
-                                </button>
-
+                                @if (Auth::check())
+                                    <button
+                                        class="relative flex max-w-xs items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 cursor-pointer">
+                                        <span class="absolute -inset-1.5"></span>
+                                        <span class="sr-only">Open user menu</span>
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            alt=""
+                                            class="size-8 rounded-full outline -outline-offset-1 outline-white/10" />
+                                        <div class="text-white text-sm font-medium ml-3">
+                                            {{ Auth::user()->name }}</div>
+                                        <div class="ms-1 text-white">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                @else
+                                    <a href="/login" class="text-white text-sm font-medium">Login</a>
+                                    <span class="text-white text-sm">|</span>
+                                    <a href="/register" class="text-white text-sm font-medium">Register</a>
+                                @endif
                                 <el-menu anchor="bottom end" popover
                                     class="w-48 origin-top-right rounded-md bg-white py-1 shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
-                                    <a href="#"
+                                    <a href="/profile"
                                         class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Your
                                         profile</a>
-                                    <a href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Settings</a>
-                                    <a href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Sign
-                                        out</a>
+                                    <a href="/dashboard"
+                                        class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Dashboard</a>
+                                    <form method="POST" action="/logout">
+                                        @csrf
+                                        <button type="submit" href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Log
+                                            Out</button>
+                                    </form>
                                 </el-menu>
                             </el-dropdown>
                         </div>
